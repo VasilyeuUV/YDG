@@ -48,8 +48,13 @@
                 <TextBlock Text="{Binding StatusBarViewModel.Status}"/>
             </StatusBarItem>
         </StatusBar>
-        <Grid>
+        
+        <DockPanel>
+            <TextBox Text="{Binding Path=YGDViewModel.Html, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True" 
+                     TextWrapping="Wrap"
+                     Margin="5"/>
 
-        </Grid>
+        </DockPanel>
     </DockPanel>
 </Window>

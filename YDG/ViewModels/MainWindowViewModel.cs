@@ -1,4 +1,5 @@
 ﻿using YDG.ViewModels.Base;
+using YDG.ViewModels.DataModels;
 
 namespace YDG.ViewModels
 {
@@ -58,7 +59,15 @@ namespace YDG.ViewModels
                 return _statusBarViewModel;
             }
         }
+               
         #endregion
+
+
+        #region YDGData
+        private YDGViewModel _yGDViewModel = null;
+        public YDGViewModel YGDViewModel => _yGDViewModel ??= new YDGViewModel();
+        #endregion
+
 
 
         #region ПЕРЕОПРЕДЕЛЕНИЕ DISPOSE
