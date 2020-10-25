@@ -17,30 +17,16 @@
         <KeyBinding Modifiers="Ctrl" Key="Q" 
                     Command="{Binding MainMenuViewModel.CloseApplicationCommand}"/>
     </Window.InputBindings>
-    <!--<Window.Resources>
-        <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
-    </Window.Resources>-->
-    
     
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Header="Создать"/>
-                <MenuItem Header="Открыть"/>
-                <MenuItem Header="Сохранить"/>
                 <MenuItem Header="Сохранить как..."/>
                 <Separator/>
                 <MenuItem Header="Выход"
                           Icon="{StaticResource IconPowerOff}"
                           Command="{Binding MainMenuViewModel.CloseApplicationCommand}"
                           />                
-                <!--<MenuItem Header="Выход"
-                          Command="{StaticResource CloseApplicationCommand}"/>-->
-                <!--<MenuItem Header="Выход">
-                    <MenuItem.Command>
-                        <cmd:CloseApplicationCommand/>
-                    </MenuItem.Command>
-                </MenuItem>-->
             </MenuItem>
             <MenuItem Header="Правка">
                 <MenuItem Header="Копировать"
@@ -53,13 +39,6 @@
                           Icon="{StaticResource IconPaste}"
                           Command="Paste"/>
             </MenuItem>
-            <MenuItem Header="Опции">
-                <MenuItem Header="Настройки"
-                          Icon="{StaticResource IconSettings}"/>
-            </MenuItem>
-            <MenuItem Header="Помощь">
-                <MenuItem Header="О программе"/>
-            </MenuItem>
         </Menu>
         <ToolBarPanel DockPanel.Dock="Top">
             
@@ -67,11 +46,6 @@
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem MinWidth="150">
                 <TextBlock Text="{Binding StatusBarViewModel.Status}"/>
-            </StatusBarItem>
-            <StatusBarItem>
-                <ProgressBar Value="15" 
-                             Width="120"
-                             Height="14"/>
             </StatusBarItem>
         </StatusBar>
         <Grid>
