@@ -15,7 +15,7 @@ namespace YDG.Models
 
         public YDPlatformModel Platform { get; internal set; }
 
-        public YDPostReactionModel Reactions { get; set; }
+        public YDPostStatsModel Reactions { get; set; }
 
     }
 }

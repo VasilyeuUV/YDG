@@ -1,6 +1,6 @@
 ﻿namespace YDG.Models
 {
-    internal class YDPostReactionModel
+    internal class YDPostStatsModel
     {
         public int LikesCount { get; internal set; }
 

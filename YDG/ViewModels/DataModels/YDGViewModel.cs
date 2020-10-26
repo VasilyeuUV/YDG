@@ -1,7 +1,10 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 using System.Web;
 using YDG.Data;
+using YDG.Infrastructure.Logic;
+using YDG.Models;
 using YDG.ViewModels.Base;
 
 namespace YDG.ViewModels.DataModels
@@ -9,9 +12,9 @@ namespace YDG.ViewModels.DataModels
     internal class YDGViewModel : ViewModelBase
     {
 
-        private string temp = "&<, >";
-
-
+        /// <summary>
+        /// CTOR
+        /// </summary>
         public YDGViewModel()
         {
             YDGData.HtmlChanged += YDGData_HtmlChanged;
@@ -19,7 +22,11 @@ namespace YDG.ViewModels.DataModels
 
         private void YDGData_HtmlChanged(object sender, System.EventArgs e)
         {
-            this.Html = YDGData.Html;
+            this._html = YDGData.Html;
+
+            HtmlParser parser = new HtmlParser();
+            this.Html = parser.GetText(this._html);
+            
         }
 
 
@@ -33,6 +40,35 @@ namespace YDG.ViewModels.DataModels
         }
         #endregion
 
+
+        #region PostModel
+
+        private YDPostModel _postModel = null;
+
+        #endregion
+
+
+        #region Posts
+
+        private ObservableCollection<YDPostModel> _posts = null;
+
+        public ObservableCollection<YDPostModel> Posts
+        {
+            get
+            {
+                if (_posts == null)
+                {
+                    HtmlParser parser = new HtmlParser();
+                    _posts = parser.GetPosts(this._html);
+                }
+                return _posts;
+            }
+
+            set => Set(ref _posts, value);
+        }
+
+
+        #endregion
 
     }
 }
