@@ -1,0 +1,36 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="YDG.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="NewsBlock" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">&lt;div class="feed__main-content"</Value>
+    </Setting>
+    <Setting Name="Article" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">&lt;article class="event-layout-default</Value>
+    </Setting>
+    <Setting Name="Author" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">&lt;a class="event-head__user-link"</Value>
+    </Setting>
+    <Setting Name="Location" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">&lt;a class="event-head__location-link"</Value>
+    </Setting>
+    <Setting Name="Dtg" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">&lt;a class="event-head__time</Value>
+    </Setting>
+    <Setting Name="Text" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">&lt;span class="text-cut</Value>
+    </Setting>
+    <Setting Name="StatsBlock" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">&lt;div class="event-footer__stats"</Value>
+    </Setting>
+    <Setting Name="Likes" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">&lt;span class="event-footer-button__text"</Value>
+    </Setting>
+    <Setting Name="Comments" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt;span class="event-footer-comments-info__count"</Value>
+    </Setting>
+    <Setting Name="Views" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt;span class="event-footer__views"</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
