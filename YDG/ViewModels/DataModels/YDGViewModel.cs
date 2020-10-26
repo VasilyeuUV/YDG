@@ -1,10 +1,16 @@
-﻿using YDG.Data;
+﻿using System.IO;
+using System.Text;
+using System.Web;
+using YDG.Data;
 using YDG.ViewModels.Base;
 
 namespace YDG.ViewModels.DataModels
 {
     internal class YDGViewModel : ViewModelBase
     {
+
+        private string temp = "&<, >";
+
 
         public YDGViewModel()
         {
@@ -30,3 +36,23 @@ namespace YDG.ViewModels.DataModels
 
     }
 }
+
+
+/*   
+ 
+         Console.WriteLine("Enter a string having '&', '<', '>' or '\"' in it: ");
+        string myString = Console.ReadLine();
+
+        // Encode the string.
+        string myEncodedString = HttpUtility.HtmlEncode(myString);
+
+        Console.WriteLine($"HTML Encoded string is: {myEncodedString}");
+        StringWriter myWriter = new StringWriter();
+
+        // Decode the encoded string.
+        HttpUtility.HtmlDecode(myEncodedString, myWriter);
+
+        string myDecodedString = myWriter.ToString();
+        Console.Write($"Decoded string of the above encoded string is: {myDecodedString}");
+ 
+ */

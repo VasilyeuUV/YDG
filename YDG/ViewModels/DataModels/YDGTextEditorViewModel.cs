@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Web;
 using System.Windows;
 using System.Windows.Input;
 using YDG.Data;
@@ -45,7 +47,11 @@ namespace YDG.ViewModels.DataModels
             _textEditorExecuteCommand ??= new LambdaCommand(
                 obj =>
                 {
-                    YDGData.Html = this.Html;
+                    // Decode the encoded string.
+                    StringWriter myWriter = new StringWriter();                    
+                    HttpUtility.HtmlDecode(this.Html, myWriter);
+
+                    YDGData.Html = myWriter.ToString();
                     this.Html = string.Empty;
 
                     Window w = obj as Window;
