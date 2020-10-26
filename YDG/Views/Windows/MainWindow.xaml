@@ -53,7 +53,10 @@
         </StatusBar>
         
         <DockPanel>
-
+            <TextBox Text="{Binding YGDViewModel.Html, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True" 
+                     TextWrapping="Wrap"
+                     Margin="3"/>
         </DockPanel>
     </DockPanel>
 </Window>

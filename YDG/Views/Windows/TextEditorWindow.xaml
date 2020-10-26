@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="Текст" Height="400" Width="300"
         xmlns:dvm="clr-namespace:YDG.ViewModels.DataModels"
+        x:Name="tew"
         >
     <Window.DataContext>
         <dvm:YDGTextEditorViewModel/>
@@ -14,11 +15,17 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" 
                     Orientation="Vertical">
-            <Button Content="Загрузить"
+            <Button Content="Обработать"
+                    Command="{Binding TextEditorExecuteCommand}"
+                    CommandParameter="{Binding ElementName=tew}"
                     Background="YellowGreen"
-                    Margin="3"/>
+                    Margin="3"
+                    />
             <Button Content="Отмена"
-                    Margin="3"/>
+                    Command="{Binding TextEditorCloseWindowCommand}"
+                    CommandParameter="{Binding ElementName=tew}"
+                    Margin="3"
+                    />
         </StackPanel>
 
         <GroupBox Header="Вставьте текст: "
@@ -26,7 +33,8 @@
             <TextBox Text="{Binding Html, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AcceptsReturn="True" 
                      TextWrapping="Wrap"
-                     Margin="3"/>
+                     Margin="3"
+                     Focusable="True"/>
         </GroupBox>                 
         
         

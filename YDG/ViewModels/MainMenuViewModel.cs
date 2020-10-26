@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using YDG.Data;
 using YDG.Infrastructure.Commands;
 using YDG.ViewModels.Base;
 using YDG.Views.Windows;
@@ -12,7 +13,7 @@ namespace YDG.ViewModels
     internal class MainMenuViewModel : ViewModelBase
     {
 
-
+        //public string Html { get; private set; }
 
 
         #region КОМАНДЫ
@@ -32,9 +33,9 @@ namespace YDG.ViewModels
             _openTextEditorCommand ??= new LambdaCommand(
                 obj => 
                 {
-
-                    //_winService = new WindowService();
-                    //winService.ShowWindow<TextEditorWindow>(dataContext: YDGTextEditorViewModel);
+                    TextEditorWindow te = new TextEditorWindow();
+                    te.ShowDialog();
+                    //this.Html = YDGData.Html;
                 });
 
         #endregion 

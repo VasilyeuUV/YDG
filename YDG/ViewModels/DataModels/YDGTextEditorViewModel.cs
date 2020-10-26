@@ -1,4 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows;
+using System.Windows.Input;
+using YDG.Data;
 using YDG.Infrastructure.Commands;
 using YDG.ViewModels.Base;
 
@@ -17,33 +20,44 @@ namespace YDG.ViewModels.DataModels
         }
         #endregion
 
-
-
         #region КОМАНДЫ
 
-        #region TextEditorExitCommandCommand
+        #region TextEditorCloseWindowCommand
 
-        private ICommand _textEditorExitCommandCommand = null;
-        public ICommand TextEditorExitCommandCommand =>
-            _textEditorExitCommandCommand ??= new LambdaCommand(obj => 
-            { 
-            
-            });
+        private ICommand _textEditoCloseWindowCommand = null;
+        public ICommand TextEditorCloseWindowCommand =>
+            _textEditoCloseWindowCommand ??= new LambdaCommand(
+                obj =>
+                {
+                    this.Html = string.Empty;
+                    YDGData.Html = string.Empty;
+
+                    Window w = obj as Window;
+                    w?.Close();
+                });
 
         #endregion
 
-        #region JobStartCommand
+        #region TextEditorExecuteCommand
 
-        private ICommand _jobStartCommand = null;
-        public ICommand JobStartCommand =>
-            _jobStartCommand ??= new LambdaCommand(
+        private ICommand _textEditorExecuteCommand = null;
+        public ICommand TextEditorExecuteCommand =>
+            _textEditorExecuteCommand ??= new LambdaCommand(
                 obj =>
                 {
+                    YDGData.Html = this.Html;
+                    this.Html = string.Empty;
 
-                });
+                    Window w = obj as Window;
+                    w?.Close();
+                },
+                obj =>
+                {
+                    return this.Html.Length < 20 ? false : true;
+                }
+                );
 
         #endregion 
-
 
         #endregion
     }
