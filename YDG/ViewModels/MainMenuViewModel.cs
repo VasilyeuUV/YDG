@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using YDG.Infrastructure.Commands;
 using YDG.ViewModels.Base;
+using YDG.Views.Windows;
 
 namespace YDG.ViewModels
 {
@@ -12,6 +13,8 @@ namespace YDG.ViewModels
     {
 
 
+
+
         #region КОМАНДЫ
 
         #region CloseApplicationCommand
@@ -20,7 +23,22 @@ namespace YDG.ViewModels
         public ICommand CloseApplicationCommand =>
             _closeApplicationCommand ??= new LambdaCommand(obj => { Application.Current.Shutdown(); });
 
+        #endregion
+
+        #region OpenTextEditorCommand
+
+        private ICommand _openTextEditorCommand = null;
+        public ICommand OpenTextEditorCommand =>
+            _openTextEditorCommand ??= new LambdaCommand(
+                obj => 
+                {
+
+                    //_winService = new WindowService();
+                    //winService.ShowWindow<TextEditorWindow>(dataContext: YDGTextEditorViewModel);
+                });
+
         #endregion 
+
 
         #endregion
 

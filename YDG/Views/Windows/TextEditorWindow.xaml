@@ -1,0 +1,34 @@
+﻿<Window x:Class="YDG.Views.Windows.TextEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:YDG.Views.Windows"
+        mc:Ignorable="d"
+        Title="Текст" Height="400" Width="300"
+        xmlns:dvm="clr-namespace:YDG.ViewModels.DataModels"
+        >
+    <Window.DataContext>
+        <dvm:YDGTextEditorViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" 
+                    Orientation="Vertical">
+            <Button Content="Загрузить"
+                    Background="YellowGreen"
+                    Margin="3"/>
+            <Button Content="Отмена"
+                    Margin="3"/>
+        </StackPanel>
+
+        <GroupBox Header="Вставьте текст: "
+                  Margin="3">
+            <TextBox Text="{Binding Html, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True" 
+                     TextWrapping="Wrap"
+                     Margin="3"/>
+        </GroupBox>                 
+        
+        
+    </DockPanel>
+</Window>

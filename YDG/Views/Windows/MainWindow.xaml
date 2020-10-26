@@ -21,6 +21,9 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
+                <MenuItem Header="Загрузить"
+                          Command="{Binding MainMenuViewModel.OpenTextEditorCommand}"
+                          CommandParameter="{Binding  }"/>
                 <MenuItem Header="Сохранить как..."/>
                 <Separator/>
                 <MenuItem Header="Выход"
@@ -50,10 +53,6 @@
         </StatusBar>
         
         <DockPanel>
-            <TextBox Text="{Binding Path=YGDViewModel.Html, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     AcceptsReturn="True" 
-                     TextWrapping="Wrap"
-                     Margin="5"/>
 
         </DockPanel>
     </DockPanel>
