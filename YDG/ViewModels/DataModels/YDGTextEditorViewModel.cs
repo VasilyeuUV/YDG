@@ -47,11 +47,7 @@ namespace YDG.ViewModels.DataModels
             _textEditorExecuteCommand ??= new LambdaCommand(
                 obj =>
                 {
-                    // Decode the encoded string.
-                    StringWriter myWriter = new StringWriter();                    
-                    HttpUtility.HtmlDecode(this.Html, myWriter);
-
-                    YDGData.Html = myWriter.ToString();
+                    YDGData.Html = this.Html;
                     this.Html = string.Empty;
 
                     Window w = obj as Window;
