@@ -27,6 +27,7 @@ namespace YDG.ViewModels.DataModels
         private void YDGData_HtmlChanged(object sender, System.EventArgs e)
         {
             this._html = YDGData.Html;
+            this.Posts = GetPosts(Html);
 
             //HtmlParser parser = new HtmlParser();
             //this.Html = parser.GetText(this._html);
@@ -58,32 +59,24 @@ namespace YDG.ViewModels.DataModels
 
         public ObservableCollection<YDPostModel> Posts
         {
-            get
-            {
-                if (_posts == null)
-                {
-                    //HtmlParser parser = new HtmlParser();
-                    _posts = GetPosts(this._html);
-                }
-                return _posts;
-            }
-
+            get => _posts;
             set => Set(ref _posts, value);
         }
 
 
         private ObservableCollection<YDPostModel> GetPosts(string html)
         {
-            ObservableCollection<YDPostModel> posts = new ObservableCollection<YDPostModel>();
+            if (string.IsNullOrWhiteSpace(html)) { return null; }
 
-            string jobstr = HtmlParser.GetHtmlTagCode(HtmlBlock.NewsBlock, HtmlBlock.NewsBlock);
-            if (string.IsNullOrWhiteSpace(jobstr)) { return posts; }
+            string jobstr = HtmlParser.GetHtmlTagCode(html, HtmlBlock.NewsBlock);
+            if (string.IsNullOrWhiteSpace(jobstr)) { return null; }
 
             string separator = "~";
             jobstr = jobstr.Replace(HtmlBlock.ArticleBlock, separator + HtmlBlock.ArticleBlock);
 
             List<string> articles = jobstr.Split(separator).ToList();
 
+            ObservableCollection<YDPostModel> posts = new ObservableCollection<YDPostModel>();
             foreach (var article in articles)
             {
                 YDPostModel post = GetPost(article);
