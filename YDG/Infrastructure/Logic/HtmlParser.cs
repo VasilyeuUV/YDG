@@ -17,7 +17,7 @@ using YDG.Services.Interfaces;
 
 namespace YDG.Infrastructure.Logic
 {
-    internal class HtmlParser
+    internal static class HtmlParser
     {
         private static readonly Regex _tags_ = new Regex(@"<[^>]+?>", RegexOptions.Multiline | RegexOptions.Compiled);
 
@@ -107,31 +107,31 @@ namespace YDG.Infrastructure.Logic
 
 
 
-        internal ObservableCollection<YDPostModel> GetPosts(string html)
-        {
-            ObservableCollection<YDPostModel> posts = new ObservableCollection<YDPostModel>();
+        //internal ObservableCollection<YDPostModel> GetPosts(string html)
+        //{
+        //    ObservableCollection<YDPostModel> posts = new ObservableCollection<YDPostModel>();
 
-            string jobstr = GetHtmlTagCode(HtmlBlock.NewsBlock, HtmlBlock.NewsBlock);
-            if (string.IsNullOrWhiteSpace(jobstr)) { return posts; }
+        //    string jobstr = GetHtmlTagCode(HtmlBlock.NewsBlock, HtmlBlock.NewsBlock);
+        //    if (string.IsNullOrWhiteSpace(jobstr)) { return posts; }
 
-            string separator = "~";
-            jobstr = jobstr.Replace(HtmlBlock.ArticleBlock, separator + HtmlBlock.ArticleBlock);
+        //    string separator = "~";
+        //    jobstr = jobstr.Replace(HtmlBlock.ArticleBlock, separator + HtmlBlock.ArticleBlock);
 
-            List<string> articles = jobstr.Split(separator).ToList();
+        //    List<string> articles = jobstr.Split(separator).ToList();
             
-            foreach (var article in articles)
-            {
-                YDPostModel post = GetPost(article);
+        //    foreach (var article in articles)
+        //    {
+        //        YDPostModel post = GetPost(article);
 
-                if (post == null) { continue; }
-                posts.Add(post);
-            }
+        //        if (post == null) { continue; }
+        //        posts.Add(post);
+        //    }
 
-            return posts;
-        }
+        //    return posts;
+        //}
 
 
-        private string GetHtmlTagCode(string html, string tag)
+        internal static string GetHtmlTagCode(string html, string tag)
         {
             int indexOfBlockPosition = html.IndexOf(tag);
             if (indexOfBlockPosition < 0) { return string.Empty; }
@@ -184,38 +184,38 @@ namespace YDG.Infrastructure.Logic
         }
 
 
-        /// <summary>
-        /// Количество вхождений строки S0 в строку S
-        /// </summary>
-        /// <param name="s"></param>
-        /// <param name="s0"></param>
-        /// <returns></returns>
-        private int CountWords(string s, string s0)
-        {
-            int count = (s.Length - s.Replace(s0, "").Length) / s0.Length;
-            return count;
-        }
+        ///// <summary>
+        ///// Количество вхождений строки S0 в строку S
+        ///// </summary>
+        ///// <param name="s"></param>
+        ///// <param name="s0"></param>
+        ///// <returns></returns>
+        //private int CountWords(string s, string s0)
+        //{
+        //    int count = (s.Length - s.Replace(s0, "").Length) / s0.Length;
+        //    return count;
+        //}
 
 
 
-        private YDPostModel GetPost(string article)
-        {
+        //private YDPostModel GetPost(string article)
+        //{
 
-            //YDPostModel post = new YDPostModel();
+        //    //YDPostModel post = new YDPostModel();
 
-            //post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
+        //    //post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
 
 
 
-            //post.Author = GetAuthor(GetHtmlTagCode(article, HtmlBlock.Author));
-            //if (post.Author == null) { return null; }
+        //    //post.Author = GetAuthor(GetHtmlTagCode(article, HtmlBlock.Author));
+        //    //if (post.Author == null) { return null; }
 
-            ////post.Platform = GetPlatform(article);
-            ////if (post.Platform == null) { return null; }
+        //    ////post.Platform = GetPlatform(article);
+        //    ////if (post.Platform == null) { return null; }
 
-            ////post.Reactions = GetStats(article);
+        //    ////post.Reactions = GetStats(article);
 
-            //post.Dtg = new DateTime();
+        //    //post.Dtg = new DateTime();
             
 
 
@@ -223,22 +223,22 @@ namespace YDG.Infrastructure.Logic
 
 
 
-            /* 
+        //    /* 
              
-                    // Decode the encoded string.
-                    StringWriter myWriter = new StringWriter();                    
-                    HttpUtility.HtmlDecode(this.Html, myWriter);             
-             */
+        //            // Decode the encoded string.
+        //            StringWriter myWriter = new StringWriter();                    
+        //            HttpUtility.HtmlDecode(this.Html, myWriter);             
+        //     */
 
-            throw new NotImplementedException();
-        }
-
-
+        //    throw new NotImplementedException();
+        //}
 
 
 
 
-        private int GetHtmlData(Uri url, string block, string tag)
+
+
+        internal static int GetHtmlData(Uri url, string block, string tag)
         {
             if (url == null 
                 || string.IsNullOrWhiteSpace(block) 
@@ -247,7 +247,7 @@ namespace YDG.Infrastructure.Logic
                 return 0;
             }
 
-            string html = GetHtmlPageText(url.AbsoluteUri);
+            string html = GetHtmlCodeText(url.AbsoluteUri);
 
 
 
@@ -326,7 +326,7 @@ namespace YDG.Infrastructure.Logic
         }
 
 
-        private string GetHtmlPageText(string url)
+        private static string GetHtmlCodeText(string url)
         {
             string html = string.Empty;
             //url = @"https://www.javaer101.com/article/5043442.html";
@@ -385,84 +385,84 @@ namespace YDG.Infrastructure.Logic
 
 
 
-        internal string GetText(string html)
-        {            
-            int indexOfBlockPosition = html.IndexOf(HtmlBlock.NewsBlock);
-            string jobstr = indexOfBlockPosition > 0 ? html.Substring(indexOfBlockPosition) : string.Empty;           
+        //internal string GetText(string html)
+        //{            
+        //    int indexOfBlockPosition = html.IndexOf(HtmlBlock.NewsBlock);
+        //    string jobstr = indexOfBlockPosition > 0 ? html.Substring(indexOfBlockPosition) : string.Empty;           
 
-            //post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
+        //    //post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
 
-            string separator = "~";
-            jobstr = jobstr.Replace(HtmlBlock.ArticleBlock, separator + HtmlBlock.ArticleBlock);
+        //    string separator = "~";
+        //    jobstr = jobstr.Replace(HtmlBlock.ArticleBlock, separator + HtmlBlock.ArticleBlock);
 
-            List<string> articles = jobstr.Split(separator).ToList();
+        //    List<string> articles = jobstr.Split(separator).ToList();
 
-            string txt = string.Empty;
+        //    string txt = string.Empty;
 
-            foreach (var article in articles)
-            {
-                YDPostModel post = new YDPostModel();
+        //    foreach (var article in articles)
+        //    {
+        //        YDPostModel post = new YDPostModel();
 
-                post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
+        //        post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
 
-                string dtgTag = GetHtmlTagCode(article, HtmlBlock.Dtg);
-                //post.Dtg = GetDtg(dtgTag);
-                post.PostUrl = GetUrl(dtgTag);
+        //        string dtgTag = GetHtmlTagCode(article, HtmlBlock.Dtg);
+        //        //post.Dtg = GetDtg(dtgTag);
+        //        post.PostUrl = GetUrl(dtgTag);
 
-                post.Author = GetAuthorGroup(GetHtmlTagCode(article, HtmlBlock.Author));
-                if (post.Author?.Url != null)
-                {
-                    post.Author.FollowersCount = GetHtmlData(post.Author.Url, HtmlBlock.UserInfo, HtmlBlock.UserInfoFollowersCount);
-                }
+        //        post.Author = GetAuthorGroup(GetHtmlTagCode(article, HtmlBlock.Author));
+        //        if (post.Author?.Url != null)
+        //        {
+        //            post.Author.FollowersCount = GetHtmlData(post.Author.Url, HtmlBlock.UserInfo, HtmlBlock.UserInfoFollowersCount);
+        //        }
 
-                post.Group = GetAuthorGroup(GetHtmlTagCode(article, HtmlBlock.Group));
-                if (post.Group?.Url != null)
-                {
-                    post.Group.FollowersCount = GetHtmlData(post.Group.Url, HtmlBlock.GroupInfo, HtmlBlock.GroupInfoFollowersCount);
-                }
+        //        post.Group = GetAuthorGroup(GetHtmlTagCode(article, HtmlBlock.Group));
+        //        if (post.Group?.Url != null)
+        //        {
+        //            post.Group.FollowersCount = GetHtmlData(post.Group.Url, HtmlBlock.GroupInfo, HtmlBlock.GroupInfoFollowersCount);
+        //        }
 
-                post.Stats = GetStats(GetHtmlTagCode(article, HtmlBlock.StatsBlock));
-
-
-                txt += post.Text + String.Format("\r\n\r\n");
-
-                //var Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.ArticleBlock));
-
-                //var art = HtmlParser.UnHtml(article);
-            }
-            return string.IsNullOrWhiteSpace(txt) ? "Нет данных" : txt;
-        }
-
-        private YDPostStatsModel GetStats(string tag)
-        {
-            if (string.IsNullOrWhiteSpace(tag)) { return null; }
-
-            YDPostStatsModel stats = new YDPostStatsModel();
-
-            stats.CommentsCount = StringConverter.ToInt32(HtmlParser.UnHtml(GetHtmlTagCode(tag, HtmlBlock.CommentsCount)));
-            stats.LikesCount = StringConverter.ToInt32(HtmlParser.UnHtml(GetHtmlTagCode(tag, HtmlBlock.LikesCount)));
-            stats.RepostsCount = 0;
-            stats.ViewsCount = StringConverter.ToInt32(HtmlParser.UnHtml(GetHtmlTagCode(tag, HtmlBlock.ViewsCount)));
-
-            return stats;
-        }
+        //        post.Stats = GetStats(GetHtmlTagCode(article, HtmlBlock.StatsBlock));
 
 
-        private YDAuthorGroupModel GetAuthorGroup(string tag)
-        {
-            if (string.IsNullOrWhiteSpace(tag)) { return null; }
+        //        txt += post.Text + String.Format("\r\n\r\n");
 
-            YDAuthorGroupModel model = new YDAuthorGroupModel();
+        //        //var Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.ArticleBlock));
 
-            model.Name = HtmlParser.UnHtml(tag);
-            if (string.IsNullOrWhiteSpace(model.Name)) { return null; }
+        //        //var art = HtmlParser.UnHtml(article);
+        //    }
+        //    return string.IsNullOrWhiteSpace(txt) ? "Нет данных" : txt;
+        //}
 
-            model.Url = GetUrl(tag);
-            return model;
-        }
+        //private YDPostStatsModel GetStats(string tag)
+        //{
+        //    if (string.IsNullOrWhiteSpace(tag)) { return null; }
+
+        //    YDPostStatsModel stats = new YDPostStatsModel();
+
+        //    stats.CommentsCount = StringConverter.ToInt32(HtmlParser.UnHtml(GetHtmlTagCode(tag, HtmlBlock.CommentsCount)));
+        //    stats.LikesCount = StringConverter.ToInt32(HtmlParser.UnHtml(GetHtmlTagCode(tag, HtmlBlock.LikesCount)));
+        //    stats.RepostsCount = 0;
+        //    stats.ViewsCount = StringConverter.ToInt32(HtmlParser.UnHtml(GetHtmlTagCode(tag, HtmlBlock.ViewsCount)));
+
+        //    return stats;
+        //}
 
 
-        private Uri GetUrl(string author)
+        //private YDAuthorGroupModel GetAuthorGroup(string tag)
+        //{
+        //    if (string.IsNullOrWhiteSpace(tag)) { return null; }
+
+        //    YDAuthorGroupModel model = new YDAuthorGroupModel();
+
+        //    model.Name = HtmlParser.UnHtml(tag);
+        //    if (string.IsNullOrWhiteSpace(model.Name)) { return null; }
+
+        //    model.Url = GetUrl(tag);
+        //    return model;
+        //}
+
+
+        internal static Uri GetUrl(string author)
         {
             int hrefPosition = author.IndexOf("href");
             if (hrefPosition < 0) { return null; }
