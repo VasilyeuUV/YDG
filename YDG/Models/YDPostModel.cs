@@ -11,11 +11,11 @@ namespace YDG.Models
 
         public Uri PostUrl { get; internal set; }
 
-        public YDAuthorModel Author { get; internal set; }
+        public YDAuthorGroupModel Author { get; internal set; }
 
-        public YDPlatformModel Platform { get; internal set; }
+        public YDAuthorGroupModel Group { get; internal set; }
 
-        public YDPostStatsModel Reactions { get; set; }
+        public YDPostStatsModel Stats { get; set; }
 
     }
 }

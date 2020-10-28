@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
 using YDG.Data;
+using YDG.Infrastructure.Converters;
 using YDG.Models;
+using YDG.Services.Interfaces;
 
 namespace YDG.Infrastructure.Logic
 {
@@ -140,22 +142,28 @@ namespace YDG.Infrastructure.Logic
             int b = tag.IndexOf('>'); if (b < 0) { b = tag.Length; }
             int startTagLength =  a < b ? a : b;
             string startTag = tag.Substring(0, startTagLength + 1);
+
             string endTag = (startTag[0] + @"/" + startTag.Substring(1)).Trim();
             if (endTag[endTag.Length - 1] != '>') { endTag += '>'; }
 
-            int countStartTag = CountWords(html, startTag);
-            int countEndTag = CountWords(html, endTag);
+            //int countStartTag = CountWords(html, startTag);
+            //int countEndTag = CountWords(html, endTag);
 
             int tagCount = 1;
             int startTagIndex = startTag.Length;
             int endTagIndex = 0;
             do
             {
-                startTagIndex = html.IndexOf(startTag, startTagIndex);
-                if (startTagIndex < 0) { startTagIndex = html.Length; }
 
                 endTagIndex = html.IndexOf(endTag, endTagIndex);
-                if (endTagIndex < 0) { endTagIndex = html.Length; }
+                if (endTagIndex < 0)
+                {
+                    endTagIndex = html.Length;
+                    endTagIndex = html.IndexOf('>', startTagIndex);         // ?
+                }
+
+                startTagIndex = html.IndexOf(startTag, startTagIndex);
+                if (startTagIndex < 0) { startTagIndex = html.Length; }
 
                 if (startTagIndex < endTagIndex)
                 {
@@ -193,21 +201,21 @@ namespace YDG.Infrastructure.Logic
         private YDPostModel GetPost(string article)
         {
 
-            YDPostModel post = new YDPostModel();
+            //YDPostModel post = new YDPostModel();
 
-            post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
+            //post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
 
 
 
-            post.Author = GetAuthor(GetHtmlTagCode(article, HtmlBlock.Author));
-            if (post.Author == null) { return null; }
+            //post.Author = GetAuthor(GetHtmlTagCode(article, HtmlBlock.Author));
+            //if (post.Author == null) { return null; }
 
-            //post.Platform = GetPlatform(article);
-            //if (post.Platform == null) { return null; }
+            ////post.Platform = GetPlatform(article);
+            ////if (post.Platform == null) { return null; }
 
-            //post.Reactions = GetStats(article);
+            ////post.Reactions = GetStats(article);
 
-            post.Dtg = new DateTime();
+            //post.Dtg = new DateTime();
             
 
 
@@ -227,23 +235,7 @@ namespace YDG.Infrastructure.Logic
 
 
 
-        private YDAuthorModel GetAuthor(string author)
-        {
-            if (string.IsNullOrWhiteSpace(author)) { return null; }
 
-            YDAuthorModel authorModel = new YDAuthorModel();
-            authorModel.NickName = HtmlParser.UnHtml(author);
-            if (string.IsNullOrWhiteSpace(authorModel.NickName)) { return null; }
-
-            authorModel.Url = GetUrl(author);
-            if (authorModel.Url != null)
-            {
-                authorModel.FollowersCount = GetHtmlData(authorModel.Url, HtmlBlock.UserInfo, HtmlBlock.UserInfoFollowersCount);
-            }
-
-
-            return authorModel;
-        }
 
 
         private int GetHtmlData(Uri url, string block, string tag)
@@ -384,37 +376,7 @@ namespace YDG.Infrastructure.Logic
 
 
 
-        private Uri GetUrl(string author)
-        {
-            int hrefPosition = author.IndexOf("href");
-            if (hrefPosition < 0) { return null; }
 
-            StringBuilder url = new StringBuilder();
-
-            int httpPosition = author.IndexOf("http");
-            if (httpPosition < 0) 
-            { 
-                url.Append("https://local.yandex.ru");
-                httpPosition = author.IndexOf('"', hrefPosition);
-            }
-            int endUrlPosition = author.IndexOf('"', httpPosition + 1);
-            if (endUrlPosition < 0) { endUrlPosition = author.Length - 1; }
-
-            string urlTmp = author.Substring(httpPosition + 1, endUrlPosition - httpPosition - 1);
-
-            //try
-            //{
-            //string urlTmp = author.Substring(httpPosition, endUrlPosition - 1);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show($"Длина строки {author.Length}; Старт {httpPosition}; Финиш {endUrlPosition} \n {ex.Message}");
-            //}
-
-
-            url.Append(urlTmp);
-            return new Uri(url.ToString());
-        }
 
 
 
@@ -424,35 +386,102 @@ namespace YDG.Infrastructure.Logic
 
 
         internal string GetText(string html)
-        {
-            
-
-
-
+        {            
             int indexOfBlockPosition = html.IndexOf(HtmlBlock.NewsBlock);
-            string jobstr = indexOfBlockPosition > 0 ? html.Substring(indexOfBlockPosition) : string.Empty;
+            string jobstr = indexOfBlockPosition > 0 ? html.Substring(indexOfBlockPosition) : string.Empty;           
 
+            //post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
 
-            string content = string.Empty;
             string separator = "~";
             jobstr = jobstr.Replace(HtmlBlock.ArticleBlock, separator + HtmlBlock.ArticleBlock);
 
             List<string> articles = jobstr.Split(separator).ToList();
 
+            string txt = string.Empty;
+
             foreach (var article in articles)
             {
-                var Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.ArticleBlock));
+                YDPostModel post = new YDPostModel();
 
-                content = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
+                post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
 
-                var Author = GetAuthor(GetHtmlTagCode(article, HtmlBlock.Author));
+                string dtgTag = GetHtmlTagCode(article, HtmlBlock.Dtg);
+                //post.Dtg = GetDtg(dtgTag);
+                post.PostUrl = GetUrl(dtgTag);
 
+                post.Author = GetAuthorGroup(GetHtmlTagCode(article, HtmlBlock.Author));
+                if (post.Author?.Url != null)
+                {
+                    post.Author.FollowersCount = GetHtmlData(post.Author.Url, HtmlBlock.UserInfo, HtmlBlock.UserInfoFollowersCount);
+                }
+
+                post.Group = GetAuthorGroup(GetHtmlTagCode(article, HtmlBlock.Group));
+                if (post.Group?.Url != null)
+                {
+                    post.Group.FollowersCount = GetHtmlData(post.Group.Url, HtmlBlock.GroupInfo, HtmlBlock.GroupInfoFollowersCount);
+                }
+
+                post.Stats = GetStats(GetHtmlTagCode(article, HtmlBlock.StatsBlock));
+
+
+                txt += post.Text + String.Format("\r\n\r\n");
+
+                //var Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.ArticleBlock));
 
                 //var art = HtmlParser.UnHtml(article);
             }
+            return string.IsNullOrWhiteSpace(txt) ? "Нет данных" : txt;
+        }
+
+        private YDPostStatsModel GetStats(string tag)
+        {
+            if (string.IsNullOrWhiteSpace(tag)) { return null; }
+
+            YDPostStatsModel stats = new YDPostStatsModel();
+
+            stats.CommentsCount = StringConverter.ToInt32(HtmlParser.UnHtml(GetHtmlTagCode(tag, HtmlBlock.CommentsCount)));
+            stats.LikesCount = StringConverter.ToInt32(HtmlParser.UnHtml(GetHtmlTagCode(tag, HtmlBlock.LikesCount)));
+            stats.RepostsCount = 0;
+            stats.ViewsCount = StringConverter.ToInt32(HtmlParser.UnHtml(GetHtmlTagCode(tag, HtmlBlock.ViewsCount)));
+
+            return stats;
+        }
 
 
-            return string.IsNullOrWhiteSpace(content) ? "Пустая строка" : content;
+        private YDAuthorGroupModel GetAuthorGroup(string tag)
+        {
+            if (string.IsNullOrWhiteSpace(tag)) { return null; }
+
+            YDAuthorGroupModel model = new YDAuthorGroupModel();
+
+            model.Name = HtmlParser.UnHtml(tag);
+            if (string.IsNullOrWhiteSpace(model.Name)) { return null; }
+
+            model.Url = GetUrl(tag);
+            return model;
+        }
+
+
+        private Uri GetUrl(string author)
+        {
+            int hrefPosition = author.IndexOf("href");
+            if (hrefPosition < 0) { return null; }
+
+            StringBuilder url = new StringBuilder();
+
+            int httpPosition = author.IndexOf("http");
+            if (httpPosition < 0)
+            {
+                url.Append("https://local.yandex.ru");
+                httpPosition = author.IndexOf('"', hrefPosition);
+            }
+            int endUrlPosition = author.IndexOf('"', httpPosition + 1);
+            if (endUrlPosition < 0) { endUrlPosition = author.Length - 1; }
+
+            string urlTmp = author.Substring(httpPosition + 1, endUrlPosition - httpPosition - 1);
+
+            url.Append(urlTmp);
+            return new Uri(url.ToString());
         }
     }
 }
