@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
+using System.Windows;
 using YDG.Data;
 using YDG.Models;
 
@@ -36,8 +41,9 @@ namespace YDG.Infrastructure.Logic
 
             //replace matches of these regexes with space
             html = _newLineTagRegex.Replace(html, string.Format("\r\n"));
+            html = html.Replace(@"</p>", @"</p>" + string.Format("\r\n"), StringComparison.OrdinalIgnoreCase);
             html = _tags_.Replace(html, " ");
-            html = _notOkCharacter_.Replace(html, " ");
+            //html = _notOkCharacter_.Replace(html, " ");
             html = SingleSpacedTrim(html);
 
             return html;
@@ -190,11 +196,11 @@ namespace YDG.Infrastructure.Logic
             YDPostModel post = new YDPostModel();
 
             post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
-            
 
 
-            //post.Author = GetAuthor(article);
-            //if (post.Author == null) { return null; }
+
+            post.Author = GetAuthor(GetHtmlTagCode(article, HtmlBlock.Author));
+            if (post.Author == null) { return null; }
 
             //post.Platform = GetPlatform(article);
             //if (post.Platform == null) { return null; }
@@ -221,6 +227,199 @@ namespace YDG.Infrastructure.Logic
 
 
 
+        private YDAuthorModel GetAuthor(string author)
+        {
+            if (string.IsNullOrWhiteSpace(author)) { return null; }
+
+            YDAuthorModel authorModel = new YDAuthorModel();
+            authorModel.NickName = HtmlParser.UnHtml(author);
+            if (string.IsNullOrWhiteSpace(authorModel.NickName)) { return null; }
+
+            authorModel.Url = GetUrl(author);
+            if (authorModel.Url != null)
+            {
+                authorModel.FollowersCount = GetHtmlData(authorModel.Url, HtmlBlock.UserInfo, HtmlBlock.UserInfoFollowersCount);
+            }
+
+
+            return authorModel;
+        }
+
+
+        private int GetHtmlData(Uri url, string block, string tag)
+        {
+            if (url == null 
+                || string.IsNullOrWhiteSpace(block) 
+                || string.IsNullOrWhiteSpace(tag))
+            {
+                return 0;
+            }
+
+            string html = GetHtmlPageText(url.AbsoluteUri);
+
+
+
+
+
+            /*
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+            Cookie cookie = new Cookie
+            {
+                Name = "beget",
+                Value = "begetok"
+            };
+            request.CookieContainer = new CookieContainer();
+            request.CookieContainer.Add(new Uri(url.AbsoluteUri), cookie);
+
+            HttpWebResponse response;
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+            }
+            catch (WebException ex) 
+            { 
+                response = (HttpWebResponse)ex.Response;
+                if (response.StatusCode != HttpStatusCode.Redirect) { throw (ex); }
+            }
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                Stream receiveStream = response.GetResponseStream();
+                StreamReader readStream = null;
+                if (response.CharacterSet == null)
+                {
+                    readStream = new StreamReader(receiveStream);
+                }
+                else
+                {
+                    readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+                }
+                html = readStream.ReadToEnd();
+                response.Close();
+                readStream.Close();
+            }
+            */
+
+
+
+            if (string.IsNullOrWhiteSpace(html)) { return 0; }
+
+
+
+
+
+            //using (WebClient client = new WebClient())
+            //{
+            //    string strUrl = url.AbsoluteUri;
+
+            //    Stream data = client.OpenRead(url.AbsoluteUri);
+            //    StreamReader reader = new StreamReader(data);
+            //    html = reader.ReadToEnd();
+            //    data.Close();
+            //    reader.Close();
+            //}
+            
+            string htmlBlock = GetHtmlTagCode(html, block);
+            string numberOf = HtmlParser.UnHtml(GetHtmlTagCode(htmlBlock, tag));
+
+            try
+            {
+                return Int32.Parse(numberOf);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+
+        private string GetHtmlPageText(string url)
+        {
+            string html = string.Empty;
+            //url = @"https://www.javaer101.com/article/5043442.html";
+
+
+            // отключить перенаправление
+            //HttpClientHandler httpClientHandler = new HttpClientHandler();
+            //httpClientHandler.AllowAutoRedirect = false;
+
+            HttpClient httpClient = new HttpClient(/*httpClientHandler*/);
+            using (HttpResponseMessage response = httpClient.GetAsync(url).Result)
+            {
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+
+                }
+
+                using (HttpContent content = response.Content)
+                {
+                    html = content.ReadAsStringAsync().Result;
+                }
+            }
+
+            return html;
+        }
+
+
+        private static async Task<string> GetHtmlPageTextAsync(string url)
+        {
+            string html = string.Empty;
+            await Task.Run(async () => {
+
+                // ... используем HttpClient.
+                using (HttpClient client = new HttpClient())
+                using (HttpResponseMessage response = await client.GetAsync(url))
+                using (HttpContent content = response.Content)
+                {
+                    // ... записать ответ
+                    html = await content.ReadAsStringAsync();
+                }
+            });
+            return html;
+        }
+
+
+
+
+
+
+        private Uri GetUrl(string author)
+        {
+            int hrefPosition = author.IndexOf("href");
+            if (hrefPosition < 0) { return null; }
+
+            StringBuilder url = new StringBuilder();
+
+            int httpPosition = author.IndexOf("http");
+            if (httpPosition < 0) 
+            { 
+                url.Append("https://local.yandex.ru");
+                httpPosition = author.IndexOf('"', hrefPosition);
+            }
+            int endUrlPosition = author.IndexOf('"', httpPosition + 1);
+            if (endUrlPosition < 0) { endUrlPosition = author.Length - 1; }
+
+            string urlTmp = author.Substring(httpPosition + 1, endUrlPosition - httpPosition - 1);
+
+            //try
+            //{
+            //string urlTmp = author.Substring(httpPosition, endUrlPosition - 1);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"Длина строки {author.Length}; Старт {httpPosition}; Финиш {endUrlPosition} \n {ex.Message}");
+            //}
+
+
+            url.Append(urlTmp);
+            return new Uri(url.ToString());
+        }
+
+
+
+
+
 
 
 
@@ -233,8 +432,8 @@ namespace YDG.Infrastructure.Logic
             int indexOfBlockPosition = html.IndexOf(HtmlBlock.NewsBlock);
             string jobstr = indexOfBlockPosition > 0 ? html.Substring(indexOfBlockPosition) : string.Empty;
 
-            
 
+            string content = string.Empty;
             string separator = "~";
             jobstr = jobstr.Replace(HtmlBlock.ArticleBlock, separator + HtmlBlock.ArticleBlock);
 
@@ -244,12 +443,16 @@ namespace YDG.Infrastructure.Logic
             {
                 var Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.ArticleBlock));
 
-                string content = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
+                content = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
+
+                var Author = GetAuthor(GetHtmlTagCode(article, HtmlBlock.Author));
+
 
                 //var art = HtmlParser.UnHtml(article);
             }
 
-            return jobstr;
+
+            return string.IsNullOrWhiteSpace(content) ? "Пустая строка" : content;
         }
     }
 }

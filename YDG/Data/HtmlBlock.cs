@@ -17,5 +17,9 @@ namespace YDG.Data
         public static string CommentsCount { get; } = "<span class=\"event-footer-comments-info__count";
         public static string ViewsCount { get; } = "<span class=\"event-footer__views";
 
+
+        public static string UserInfo { get; } = "<div class=\"user-info \">";
+        public static string UserInfoFollowersCount { get; } = "<span class=\"tabs__item-content\"";
+
     }
 }
