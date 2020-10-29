@@ -125,7 +125,7 @@
                     <DataGridTemplateColumn Header="Url" CellTemplate="{StaticResource PostUrl}" />
                     <DataGridTemplateColumn Header="Автор" CellTemplate="{StaticResource Author}"/>
                     <DataGridTemplateColumn Header="Группа" CellTemplate="{StaticResource Group}"/>
-                    <DataGridTemplateColumn Header="Группа" CellTemplate="{StaticResource Stats}"/>
+                    <DataGridTemplateColumn Header="Вовлеченность" CellTemplate="{StaticResource Stats}"/>
                     <DataGridTextColumn Header="Район" Binding="{Binding Group.Name, Mode=OneWay}"/>
                 </DataGrid.Columns>                
             </DataGrid>            

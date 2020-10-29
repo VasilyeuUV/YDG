@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Microsoft.Win32;
+using System;
+using System.Windows;
 using System.Windows.Input;
 using YDG.Data;
 using YDG.Infrastructure.Commands;
@@ -40,6 +42,42 @@ namespace YDG.ViewModels
 
         #endregion 
 
+        #region FileSaveAsCommand
+
+        private ICommand _fileSaveAsCommand = null;
+        public ICommand FileSaveAsCommand =>
+            _fileSaveAsCommand ??= new LambdaCommand(
+                obj =>
+                {
+                    SaveFile();
+                });
+
+        private void SaveFile()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "xls files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                fileName = saveFileDialog.FileName;
+            }
+            else
+                return;
+            //сохраняем Workbook
+            wb.SaveAs(fileName, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            saveFileDialog.Dispose();
+        }
+                if (res == DialogResult.Cancel)
+                {
+                    StatusLabel.Text = "Сохранение результатов экспорта отменено";
+                }
+}
+
+
+
+
+        #endregion
 
         #endregion
 
