@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Web;
 using YDG.Data;
 using YDG.Infrastructure.Converters;
 using YDG.Infrastructure.Logic;
@@ -97,7 +94,7 @@ namespace YDG.ViewModels.DataModels
             // Post
             post.Text = HtmlParser.UnHtml(HtmlParser.GetHtmlTagCode(article, HtmlBlock.Text));
             string dtgTag = HtmlParser.GetHtmlTagCode(article, HtmlBlock.Dtg);
-            //post.Dtg = GetDtg(dtgTag);
+            post.Dtg = GetDtg(HtmlParser.UnHtml(dtgTag));
             post.PostUrl = HtmlParser.GetUrl(dtgTag);
 
             // Author
@@ -120,6 +117,39 @@ namespace YDG.ViewModels.DataModels
             return post;
         }
 
+        private System.DateTime GetDtg(string dtgTag)
+        {
+            int value = GetInt(dtgTag);
+
+            DateTime dtg = DateTime.Now;
+
+            if (dtgTag.ToLower().IndexOf("м") >= 0)
+            {
+                return dtg.AddMinutes(-value);
+            }
+            if (dtgTag.ToLower().IndexOf("ч") >= 0)
+            {
+                return dtg.AddHours(-value);
+            }
+            if (dtgTag.ToLower().IndexOf("д") >= 0)
+            {
+                return dtg.AddDays(-value);
+            }
+            return dtg;
+        }
+
+        private static int GetInt(string dtgTag)
+        {
+            int value;
+            int.TryParse(string.Join("", dtgTag.Where(c => char.IsDigit(c))), out value);
+
+            if (dtgTag.ToLower().IndexOf("т") >= 0)
+            {
+                value *= 1000;
+            }
+
+            return value;
+        }
 
         private YDAuthorGroupModel GetAuthorGroup(string tag)
         {
@@ -140,9 +170,9 @@ namespace YDG.ViewModels.DataModels
             YDPostStatsModel stats = new YDPostStatsModel();
             if (string.IsNullOrWhiteSpace(tag)) { return stats; }
 
-            stats.CommentsCount = StringConverter.ToInt32(HtmlParser.UnHtml(HtmlParser.GetHtmlTagCode(tag, HtmlBlock.CommentsCount)));
-            stats.LikesCount = StringConverter.ToInt32(HtmlParser.UnHtml(HtmlParser.GetHtmlTagCode(tag, HtmlBlock.LikesCount)));            
-            stats.ViewsCount = StringConverter.ToInt32(HtmlParser.UnHtml(HtmlParser.GetHtmlTagCode(tag, HtmlBlock.ViewsCount)));
+            stats.CommentsCount = GetInt(HtmlParser.UnHtml(HtmlParser.GetHtmlTagCode(tag, HtmlBlock.CommentsCount)));
+            stats.LikesCount = GetInt(HtmlParser.UnHtml(HtmlParser.GetHtmlTagCode(tag, HtmlBlock.LikesCount)));            
+            stats.ViewsCount = GetInt(HtmlParser.UnHtml(HtmlParser.GetHtmlTagCode(tag, HtmlBlock.ViewsCount)));
             stats.RepostsCount = 0;
 
             return stats;
