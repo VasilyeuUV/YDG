@@ -22,6 +22,15 @@ namespace YDG.Infrastructure.Dialogs
         public bool SaveFileDialog()
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Title = "Save a Csv File";
+            saveFileDialog.Filter = "Csv files (*.csv)|*.csv";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+            saveFileDialog.FileName = "yandex_district_posts_"; // Default file name
+            saveFileDialog.DefaultExt = ".csv";                 // Default file extension
+
+
             if (saveFileDialog.ShowDialog() == true)
             {
                 FilePath = saveFileDialog.FileName;

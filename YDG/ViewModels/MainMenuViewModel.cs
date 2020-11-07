@@ -1,9 +1,17 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using YDG.Data;
 using YDG.Infrastructure.Commands;
+using YDG.Infrastructure.Converters;
+using YDG.Infrastructure.Dialogs;
+using YDG.Infrastructure.FileServises;
+using YDG.Interfaces;
+using YDG.Models;
 using YDG.ViewModels.Base;
 using YDG.Views.Windows;
 
@@ -50,36 +58,58 @@ namespace YDG.ViewModels
             _fileSaveAsCommand ??= new LambdaCommand(
                 obj =>
                 {
-                    SaveFile();
+                    var posts = obj as ICollection<YDPostModel>;
+                    SaveFile(posts);
                 });
 
-        private void SaveFile()
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Title = "Save a Csv File";
-            saveFileDialog.Filter = "Csv files (*.csv)|*.csv";
-            saveFileDialog.FilterIndex = 1;
-            saveFileDialog.RestoreDirectory = true;
-            saveFileDialog.FileName = "yandex_district_posts_"; // Default file name
-            saveFileDialog.DefaultExt = ".csv";                 // Default file extension
+        private void SaveFile(ICollection<YDPostModel> records)
+        {            
+            IFileService fileService = new CsvFileService();
+            IDialogService dialogService = new DefaultDialogService();
 
-            if (saveFileDialog.ShowDialog() == true)
+            try
             {
+                if (records == null || records.Count < 1) 
+                { 
+                    throw new Exception("Нет данных для сохранения"); 
+                }
 
+                if (dialogService.SaveFileDialog() == true)
+                {
+                    fileService.Save(dialogService.FilePath, PostToCsvConverter.Convert(records));
+                    dialogService.ShowMessage("Файл сохранен");
+                }
+            }
+            catch (Exception ex)
+            {
+                dialogService.ShowMessage(ex.Message);
             }
 
-            DialogResult result = saveFileDialog.ShowDialog();
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                fileName = saveFileDialog.FileName;
-            }
-            else
-                return;
-            //сохраняем Workbook
-            wb.SaveAs(fileName, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            saveFileDialog.Dispose();
+            //SaveFileDialog saveFileDialog = new SaveFileDialog();
+            //saveFileDialog.Title = "Save a Csv File";
+            //saveFileDialog.Filter = "Csv files (*.csv)|*.csv";
+            //saveFileDialog.FilterIndex = 1;
+            //saveFileDialog.RestoreDirectory = true;
+            //saveFileDialog.FileName = "yandex_district_posts_"; // Default file name
+            //saveFileDialog.DefaultExt = ".csv";                 // Default file extension
+
+            //if (saveFileDialog.ShowDialog() == true)
+            //{
+
+            //}
+
+            //DialogResult result = saveFileDialog.ShowDialog();
+            //if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    fileName = saveFileDialog.FileName;
+            //}
+            //else
+            //    return;
+            ////сохраняем Workbook
+            //wb.SaveAs(fileName, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            //saveFileDialog.Dispose();
         }
-}
+
 
 
 

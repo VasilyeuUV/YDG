@@ -24,7 +24,10 @@
                 <MenuItem Header="Загрузить"
                           Command="{Binding MainMenuViewModel.OpenTextEditorCommand}"
                           CommandParameter="{Binding  }"/>
-                <MenuItem Header="Сохранить как..."/>
+                <MenuItem Header="Сохранить как..."
+                          Command="{Binding MainMenuViewModel.FileSaveAsCommand}"
+                          CommandParameter="{Binding YGDViewModel.Posts}"
+                          />
                 <Separator/>
                 <MenuItem Header="Выход"
                           Icon="{StaticResource IconPowerOff}"

@@ -17,6 +17,6 @@ namespace YDG.Interfaces
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="list"></param>
-        internal void Save<T>(string path, IEnumerable<T> records) where T : CSVModel;
+        internal void Save<T>(string path, IEnumerable<T> records) where T : ICsvModel;
     }
 }

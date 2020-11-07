@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Text;
+﻿using YDG.Interfaces;
 
 namespace YDG.Models
 {
-    internal class CSVModel
+    internal class CSVModel : ICsvModel
     {
         public string PostDate { get; set; }
         public string PostTime { get; set; }
