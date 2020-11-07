@@ -3,9 +3,20 @@ using YDG.Models;
 
 namespace YDG.Interfaces
 {
-    public interface IFileService
+    internal interface IFileService
     {
-        internal List<YDPostModel> Open(string filename);
-        internal void Save(string filename, List<YDPostModel> phonesList);
+        /// <summary>
+        /// Open File
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        internal IEnumerable<YDPostModel> Open(string filename);
+
+        /// <summary>
+        /// Save File
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="list"></param>
+        internal void Save<T>(string path, IEnumerable<T> records) where T : CSVModel;
     }
 }
