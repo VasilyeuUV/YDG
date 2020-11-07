@@ -7,6 +7,7 @@ using YDG.Infrastructure.Commands;
 using YDG.ViewModels.Base;
 using YDG.Views.Windows;
 
+
 namespace YDG.ViewModels
 {
     /// <summary>
@@ -55,9 +56,19 @@ namespace YDG.ViewModels
         private void SaveFile()
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "xls files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+            saveFileDialog.Title = "Save a Csv File";
+            saveFileDialog.Filter = "Csv files (*.csv)|*.csv";
             saveFileDialog.FilterIndex = 1;
             saveFileDialog.RestoreDirectory = true;
+            saveFileDialog.FileName = "yandex_district_posts_"; // Default file name
+            saveFileDialog.DefaultExt = ".csv";                 // Default file extension
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+
+            }
+
+            DialogResult result = saveFileDialog.ShowDialog();
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 fileName = saveFileDialog.FileName;
@@ -68,10 +79,6 @@ namespace YDG.ViewModels
             wb.SaveAs(fileName, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             saveFileDialog.Dispose();
         }
-                if (res == DialogResult.Cancel)
-                {
-                    StatusLabel.Text = "Сохранение результатов экспорта отменено";
-                }
 }
 
 

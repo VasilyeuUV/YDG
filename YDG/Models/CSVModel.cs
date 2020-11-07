@@ -63,6 +63,27 @@ namespace YDG.Models
                 sw.Write(models);
             }
 
+            using (StreamWriter writer = new StreamWriter(file))
+            {
+                using (var csvWriter = new CsvWriter(writer, CultureInfo.CurrentCulture))
+                {
+                    csvWriter.Configuration.Delimiter = ";";
+                    csvWriter.Configuration.HasHeaderRecord = true;
+                    csvWriter.WriteHeader(typeof(Person));
+
+                    csvWriter.WriteHeader<Person>();
+                    csvWriter.NextRecord();
+
+                    foreach (var item in someTexts)
+                    {
+                        csvWriter.WriteField(item);
+                        csvWriter.NextRecord();
+                    }
+
+                    writer.Flush();
+                }
+            }
+
 
 
             return true;
