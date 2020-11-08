@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,11 +18,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\Windows\1482812.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="15.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\Windows\1482812.png" />
   </ItemGroup>
 
 </Project>

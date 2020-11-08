@@ -22,29 +22,17 @@ namespace YDG.Infrastructure.FileServises
         {
             if (records == null || records.Count() < 1 ) { return; }
 
-            //using (FileStream fs = new FileStream(path, FileMode.Create))
-            //{
-            //    jsonFormatter.WriteObject(fs, records);
-            //}
-
             using (var writer = new StreamWriter(path, false, Encoding.UTF8))
             {
                 using (var csvWriter = new CsvWriter(writer, CultureInfo.CurrentCulture))
                 {
                     csvWriter.Configuration.Delimiter = ";";
                     csvWriter.Configuration.HasHeaderRecord = true;
-                    csvWriter.WriteHeader(typeof(CSVModel));
 
                     csvWriter.WriteHeader<CSVModel>();
                     csvWriter.NextRecord();
 
                     csvWriter.WriteRecords(records as IEnumerable);
-
-                    //foreach (var item in records)
-                    //{
-                    //    csvWriter.WriteField(item);
-                    //    csvWriter.NextRecord();
-                    //}
                     writer.Flush();
                 }
             }

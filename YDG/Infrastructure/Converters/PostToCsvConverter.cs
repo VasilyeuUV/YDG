@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
-using YDG.Infrastructure.Converters.Base;
 using YDG.Interfaces;
 using YDG.Models;
 
@@ -29,7 +27,7 @@ namespace YDG.Infrastructure.Converters
                 CSVModel csv = new CSVModel()
                 {
                     PostDate = post.Dtg.ToString(" dd.MM.yyyy"),
-                    PostTime = post.Dtg.ToString(" hh:mm"),
+                    PostTime = post.Dtg.ToString(" HH:mm"),
                     PostText = ToUtf8(post.Text),
                     PostUrl = post.PostUrl?.AbsoluteUri,
 
@@ -45,6 +43,7 @@ namespace YDG.Infrastructure.Converters
                     LikeCount = post.Stats?.LikesCount.ToString(),
                     RepostsCount = post.Stats?.RepostsCount.ToString(),
                     ViewsCount = post.Stats?.ViewsCount.ToString(),
+                    PotencialViewsCount = post.Group?.FollowersCount.ToString(),
 
                     PostRegion = ToUtf8(post.Group?.Name),
                 };

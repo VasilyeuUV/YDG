@@ -1,11 +1,7 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using YDG.Data;
 using YDG.Infrastructure.Commands;
 using YDG.Infrastructure.Converters;
 using YDG.Infrastructure.Dialogs;
@@ -23,9 +19,6 @@ namespace YDG.ViewModels
     /// </summary>
     internal class MainMenuViewModel : ViewModelBase
     {
-
-        //public string Html { get; private set; }
-
 
         #region КОМАНДЫ
 
@@ -84,78 +77,10 @@ namespace YDG.ViewModels
             {
                 dialogService.ShowMessage(ex.Message);
             }
-
-            //SaveFileDialog saveFileDialog = new SaveFileDialog();
-            //saveFileDialog.Title = "Save a Csv File";
-            //saveFileDialog.Filter = "Csv files (*.csv)|*.csv";
-            //saveFileDialog.FilterIndex = 1;
-            //saveFileDialog.RestoreDirectory = true;
-            //saveFileDialog.FileName = "yandex_district_posts_"; // Default file name
-            //saveFileDialog.DefaultExt = ".csv";                 // Default file extension
-
-            //if (saveFileDialog.ShowDialog() == true)
-            //{
-
-            //}
-
-            //DialogResult result = saveFileDialog.ShowDialog();
-            //if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            //{
-            //    fileName = saveFileDialog.FileName;
-            //}
-            //else
-            //    return;
-            ////сохраняем Workbook
-            //wb.SaveAs(fileName, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            //saveFileDialog.Dispose();
         }
 
-
-
-
-
         #endregion
 
         #endregion
-
-
-
-
-
-        // РЕАЛИЗАЦИЯ ОДНОЙ КОМАНДЫ (подробный вариант)
-
-        //public MainMenuViewModel()
-        //{
-        //    //
-        //    #region Команды
-        //    CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
-        //    #endregion
-        //}
-
-
-        //#region КОМАНДЫ
-
-        //#region CloseApplicationCommand
-        //public ICommand CloseApplicationCommand { get; }
-
-        ///// <summary>
-        ///// Условия доступности команды (закрытие приложения)
-        ///// </summary>
-        ///// <param name="p"></param>
-        ///// <returns></returns>
-        //private bool CanCloseApplicationCommandExecute(object p) => true;
-
-        ///// <summary>
-        ///// Работает, когда команда выполняется
-        ///// </summary>
-        ///// <param name="p"></param>
-        //private void OnCloseApplicationCommandExecuted(object p)
-        //{
-        //    Application.Current.Shutdown();
-        //} 
-        //#endregion
-
-        //#endregion
-
     }
 }

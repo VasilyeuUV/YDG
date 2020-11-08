@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using YDG.Data;
-using YDG.Infrastructure.Converters;
 using YDG.Infrastructure.Logic;
 using YDG.Models;
 using YDG.ViewModels.Base;
@@ -24,11 +23,7 @@ namespace YDG.ViewModels.DataModels
         private void YDGData_HtmlChanged(object sender, System.EventArgs e)
         {
             this._html = YDGData.Html;
-            this.Posts = GetPosts(Html);
-
-            //HtmlParser parser = new HtmlParser();
-            //this.Html = parser.GetText(this._html);
-            
+            this.Posts = GetPosts(Html);           
         }
 
 
@@ -186,52 +181,3 @@ namespace YDG.ViewModels.DataModels
 
     }
 }
-
-
-/*   
- 
-            int indexOfBlockPosition = html.IndexOf(HtmlBlock.NewsBlock);
-            string jobstr = indexOfBlockPosition > 0 ? html.Substring(indexOfBlockPosition) : string.Empty;           
-
-            //post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
-
-            string separator = "~";
-            jobstr = jobstr.Replace(HtmlBlock.ArticleBlock, separator + HtmlBlock.ArticleBlock);
-
-            List<string> articles = jobstr.Split(separator).ToList();
-
-            string txt = string.Empty;
-
-            foreach (var article in articles)
-            {
-                YDPostModel post = new YDPostModel();
-
-                post.Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.Text));
-
-                string dtgTag = GetHtmlTagCode(article, HtmlBlock.Dtg);
-                //post.Dtg = GetDtg(dtgTag);
-                post.PostUrl = GetUrl(dtgTag);
-
-                post.Author = GetAuthorGroup(GetHtmlTagCode(article, HtmlBlock.Author));
-                if (post.Author?.Url != null)
-                {
-                    post.Author.FollowersCount = GetHtmlData(post.Author.Url, HtmlBlock.UserInfo, HtmlBlock.UserInfoFollowersCount);
-                }
-
-                post.Group = GetAuthorGroup(GetHtmlTagCode(article, HtmlBlock.Group));
-                if (post.Group?.Url != null)
-                {
-                    post.Group.FollowersCount = GetHtmlData(post.Group.Url, HtmlBlock.GroupInfo, HtmlBlock.GroupInfoFollowersCount);
-                }
-
-                post.Stats = GetStats(GetHtmlTagCode(article, HtmlBlock.StatsBlock));
-
-
-                txt += post.Text + String.Format("\r\n\r\n");
-
-                //var Text = HtmlParser.UnHtml(GetHtmlTagCode(article, HtmlBlock.ArticleBlock));
-
-                //var art = HtmlParser.UnHtml(article);
-            }
- 
- */

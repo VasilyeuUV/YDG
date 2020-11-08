@@ -7,7 +7,7 @@
         Title="{Binding Title}" 
         Height="450" Width="800"
         xmlns:vm="clr-namespace:YDG.ViewModels"  
-        xmlns:cmd="clr-namespace:YDG.Infrastructure.Commands"
+        xmlns:cmd="clr-namespace:YDG.Infrastructure.Commands" Icon="/Views/Windows/1482812.png"
         >
         
     <Window.DataContext>
@@ -34,7 +34,7 @@
                           Command="{Binding MainMenuViewModel.CloseApplicationCommand}"
                           />                
             </MenuItem>
-            <MenuItem Header="Правка">
+            <!--<MenuItem Header="Правка">
                 <MenuItem Header="Копировать"
                           Icon="{StaticResource IconCopy}"
                           Command="Copy"/>
@@ -44,7 +44,7 @@
                 <MenuItem Header="Вставить"
                           Icon="{StaticResource IconPaste}"
                           Command="Paste"/>
-            </MenuItem>
+            </MenuItem>-->
         </Menu>
         <ToolBarPanel DockPanel.Dock="Top">
             
@@ -56,11 +56,6 @@
         </StatusBar>
         
         <DockPanel>
-            <!--<TextBox Text="{Binding YGDViewModel.Html, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     AcceptsReturn="True" 
-                     TextWrapping="Wrap"
-                     Margin="3"/>-->
-
             <DataGrid ItemsSource="{Binding YGDViewModel.Posts}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
@@ -116,7 +111,7 @@
                 </DataGrid.Resources>
                 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Дата" Binding="{Binding Dtg, StringFormat=dd.MM.yyyy&#10;hh:mm, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Дата" Binding="{Binding Dtg, StringFormat=dd.MM.yyyy&#10;HH:mm, Mode=OneWay}"/>
                     <!--<DataGridTemplateColumn Header="Дата" CellTemplate="{StaticResource DTG}" />-->
                     <DataGridTextColumn Header="Текст" Binding="{Binding Text, Mode=OneWay}" MinWidth="500" Width="*">
                         <DataGridTextColumn.ElementStyle>

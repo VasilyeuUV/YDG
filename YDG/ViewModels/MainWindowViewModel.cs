@@ -68,18 +68,5 @@ namespace YDG.ViewModels
         public YDGViewModel YGDViewModel => _yGDViewModel ??= new YDGViewModel();
         #endregion
 
-
-
-        #region ПЕРЕОПРЕДЕЛЕНИЕ DISPOSE
-        ///// <summary>
-        ///// Переопределение метода Dispose для освобождения ресурсов 
-        ///// (При необходимости)
-        ///// </summary>
-        ///// <param name="disposing"></param>
-        //protected override void Dispose(bool disposing)
-        //{
-        //    base.Dispose(disposing);
-        //} 
-        #endregion
     }
 }
