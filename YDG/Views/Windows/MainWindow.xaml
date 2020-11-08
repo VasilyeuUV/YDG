@@ -116,8 +116,8 @@
                 </DataGrid.Resources>
                 
                 <DataGrid.Columns>
-                    <!--<DataGridTextColumn Header="Дата" Binding="{Binding Dtg, StringFormat=dd.MM.yyyy hh:mm, Mode=OneWay}"/>-->
-                    <DataGridTemplateColumn Header="Дата" CellTemplate="{StaticResource DTG}" />
+                    <DataGridTextColumn Header="Дата" Binding="{Binding Dtg, StringFormat=dd.MM.yyyy&#10;hh:mm, Mode=OneWay}"/>
+                    <!--<DataGridTemplateColumn Header="Дата" CellTemplate="{StaticResource DTG}" />-->
                     <DataGridTextColumn Header="Текст" Binding="{Binding Text, Mode=OneWay}" MinWidth="500" Width="*">
                         <DataGridTextColumn.ElementStyle>
                             <Style>

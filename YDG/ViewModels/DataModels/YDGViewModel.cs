@@ -135,6 +135,10 @@ namespace YDG.ViewModels.DataModels
             {
                 return dtg.AddDays(-value);
             }
+            if (dtgTag.ToLower().IndexOf("вчера") >= 0)
+            {
+                return dtg.AddDays(-1);
+            }
             return dtg;
         }
 

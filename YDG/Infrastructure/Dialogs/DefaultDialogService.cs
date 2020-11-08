@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System;
 using System.Windows;
 using YDG.Interfaces;
 
@@ -27,7 +28,7 @@ namespace YDG.Infrastructure.Dialogs
             saveFileDialog.Filter = "Csv files (*.csv)|*.csv";
             saveFileDialog.FilterIndex = 1;
             saveFileDialog.RestoreDirectory = true;
-            saveFileDialog.FileName = "yandex_district_posts_"; // Default file name
+            saveFileDialog.FileName = "yandex_district_posts_" + DateTime.Now.ToString("yyyyMMdd"); // Default file name
             saveFileDialog.DefaultExt = ".csv";                 // Default file extension
 
 

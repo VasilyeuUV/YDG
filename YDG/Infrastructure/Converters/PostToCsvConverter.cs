@@ -28,8 +28,8 @@ namespace YDG.Infrastructure.Converters
             {
                 CSVModel csv = new CSVModel()
                 {
-                    PostDate = post.Dtg.ToString("dd.MM.yyyy"),
-                    PostTime = post.Dtg.ToString("hh:mm"),
+                    PostDate = post.Dtg.ToString(" dd.MM.yyyy"),
+                    PostTime = post.Dtg.ToString(" hh:mm"),
                     PostText = ToUtf8(post.Text),
                     PostUrl = post.PostUrl?.AbsoluteUri,
 
